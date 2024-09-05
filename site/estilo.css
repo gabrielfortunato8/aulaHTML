@@ -1,0 +1,92 @@
+code {
+    background-color: #eeeeee;
+    padding-left: 10px;
+}
+
+h1 {
+    color: rgb(0, 0, 0);
+    font-size: 24px;
+} /* fim h1 */
+
+form {
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulo {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: midnightblue;
+    text-align: center;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+.titulo1 {
+    font-size: 22pt;
+}
+.titulo3 {
+    font-size: 16pt;
+}
+
+.texto-simples {
+    text-align: justify;
+    font-size: 12pt;
+}
+
+.botao {
+    font-weight: bold;
+    padding: 4px;
+}
+
+.botao-secondario {
+    background-color: rgb(176, 176, 176);
+}
+
+.botao-primário {
+    background-color: rgb(115, 113, 250);
+}
+
+.bg-primary {
+    background-color: rgb(187, 223, 255);
+}
+
+.bg-secondary {
+    background-color: rgb(192, 192, 192);
+}
+
+.bg-success {
+    background-color: rgb(200, 255, 197);
+}
+
+.bg-danger {
+    background-color: rgb(255, 172, 172);
+}
+
+.container {
+    margin: 4px;
+    padding: 5px;
+    align-items: center;
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 15px;
+    text-align: center;
+}
+
+th {
+    background-color: blue;
+}
+
+img {
+    max-width: 100%;
+}
+.alinhar {
+    text-align:center;
+}
