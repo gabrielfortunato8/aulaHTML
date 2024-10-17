@@ -22,23 +22,19 @@ def outra1():
 def outra2():
     return "<h1>sobre</h1>"
 
-@app.route("/area")
-def area():
-    altura= float (request.args.get('h'))
-    largura= float (request.args.get('l'))
-    return  f"""<h1> A área informada > L={largura}* H={altura} =) Area= {largura*altura}</h1>"""
+@app.route("/area/<float:largura>/<float:altura>", methods=( 'GET', ))
+def area(largura: float, altura: float):
+    return f"""<h1> A área informada >L={largura} * A={altura} => Area={largura*altura}</h1>"""
 
-@app.route("/par_ou_impar", methods=('GET',))
-def par_ou_impar():
-  numero = float(request.args.get('n'))
+@app.route("/parimpar/<float:numero>", methods=('GET',))
+def par_ou_impar(numero):
   if numero % 2 == 0:
     return f"O número {numero} é par."
   else:
     return f"O número {numero} é ímpar."
   
-@app.route("/sobrenome", methods=('GET',))
-def nomesobrenome():
-  nome = request.args.get('nome')
-  sobrenome = request.args.get('sobrenome')
+@app.route("/sobrenome/<string:nome>/<string:sobrenome>", methods=('GET',))
+def nomesobrenome(nome: str, sobrenome: str):
   return f"""<h1> sobrenome </h1>
-  <p>{sobrenome},{nome}</p>"""
+  <p>{sobrenome},{nome}</p>"""7
+
