@@ -36,5 +36,9 @@ def par_ou_impar(numero):
 @app.route("/sobrenome/<string:nome>/<string:sobrenome>", methods=('GET',))
 def nomesobrenome(nome: str, sobrenome: str):
   return f"""<h1> sobrenome </h1>
-  <p>{sobrenome},{nome}</p>"""7
+  <p>{sobrenome},{nome}</p>"""
+
+@app.route("/potencia/<float:numero>/<float:elevado>", methods=('GET',))
+def potencia(numero: float, elevado: float):
+    return f"""<h1>A potencia é> N={numero}* E={elevado} => Potencia={numero*elevado}</h1>"""
 
