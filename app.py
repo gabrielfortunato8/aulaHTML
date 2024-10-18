@@ -42,3 +42,10 @@ def nomesobrenome(nome: str, sobrenome: str):
 def potencia(numero: float, elevado: float):
     return f"""<h1>A potencia é> N={numero}* E={elevado} => Potencia={numero*elevado}</h1>"""
 
+@app.route("/tabuada/<int:num>", methods=['GET'])
+def tabuada(num: int):
+  html="<ul>"
+  for i in range(1,11):
+    html+=f"<li>{num}x{i}={num*i}</li>"
+  return html + '</ul>'
+
