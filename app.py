@@ -1,6 +1,7 @@
-from flask import (Flask, render_template, request) # Importa o flask
+from flask import (Flask, flash, redirect, render_template, request, url_for)
 
 app = Flask(__name__) # cria uma instância
+app.secret_key = 'segredo'  # Para utilizar flash messages
 
 @app.route("/", methods=('GET',)) # Assina uma rota
 def index(): #função responsável pela página
@@ -51,14 +52,24 @@ def tabuada(numero = None):
                                 
   return render_template('tabuada.html', numero=numero)
 
-@app.route("/calculo")
-@app.route("/calculo/<numero>", methods=("GET", ))
-def calculo(numero = None):
-   
-  if 'valor' in request.args:
-     numero = int(request.args.get('numero'))
+@app.route("/calculos juros", methods=('GET', 'POST'))
+def calculos_juros():
+    if request.method == 'POST':
+        investimento = float(request.form['investimento'])
+        juros_anuais = float(request.form['juros']) / 100
+        tempo_meses = int(request.form['tempo'])
+        contribuicao = float(request.form['contribuicao'])
 
-  return render_template('calculos juros.html', numero=numero)
+        montante = investimento
+        for mes in range(tempo_meses):
+            montante += contribuicao
+            montante *= (1 + juros_anuais / 12)
+
+        return f'Valor final após {tempo_meses} meses é de: R$ {montante:.2f}'
+
+    return render_template('calculos juros.html')
+
+
 
 @app.route("/login", methods=('GET', 'POST'))
 def login():
@@ -72,6 +83,7 @@ def login():
             return '<h1>Email ou senha incorretos, tente novamente😔.</h1>'
 
     return render_template('login.html')
+
 
 @app.route("/imc", methods=('GET', 'POST'))
 def calcular_imc():
@@ -106,3 +118,26 @@ def calcular_imc():
             return '<h1>Erro: Por favor insira valores válidos para peso e altura.</h1>'
     
     return render_template('calculo imc.html')
+
+
+@app.route('/consumoenergia', methods=['GET', 'POST'])
+def calcular_consumo():
+    global medicoes_mensais  # Acessando a lista global
+
+    if request.method == 'POST':
+        try:
+            nova_medicao = float(request.form['nova_medicao'])
+            medicoes_mensais.append(nova_medicao)
+
+            # Cálculo do consumo e valor
+            consumo = [medicoes_mensais[i] - medicoes_mensais[i - 1] for i in range(1, len(medicoes_mensais))]
+            valor_kwh = 0.89  # Exemplo de valor do kWh
+            valores = [c * valor_kwh for c in consumo]
+
+            return render_template('consumoenergia.html', medicoes=medicoes_mensais, consumo=consumo, valores=valores)
+
+        except ValueError:
+            flash("Por favor, insira um valor válido.")
+            return redirect(url_for('calcular_consumo'))
+
+    return render_template('consumoenergia.html', medicoes=medicoes_mensais)
