@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas 2.0</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        label, select, input, button {
+            margin-bottom: 10px;
+        }
+        .resultado {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Conversor de Moedas</h1>
+    <form id="conversorForm">
+        <label for="valor">Valor em R$:</label>
+        <input type="number" id="valor" name="valor" placeholder="Insira o valor em reais" required><br>
+
+        <label for="moeda">Escolha a moeda:</label>
+        <select id="moeda" required>
+            <option value="">Selecione</option>
+            <option value="euro">Euro (EUR)</option>
+            <option value="dolar">Dólar (USD)</option>
+            <option value="libra">Libra Esterlina (GBP)</option>
+        </select><br>
+
+        <button type="button" onclick="converter()">Enviar</button>
+    </form>
+
+    <div id="resultado" class="resultado"></div>
+
+    <script>
+        function converter() {
+            // Obter os valores do formulário
+            var valorEmReais = parseFloat(document.getElementById('valor').value);
+            var moedaSelecionada = document.getElementById('moeda').value;
+
+            // Validação de campos
+            if (isNaN(valorEmReais) || valorEmReais <= 0) {
+                alert("Por favor, insira um valor válido em reais.");
+                return;
+            }
+
+            if (moedaSelecionada === "") {
+                alert("Por favor, selecione uma moeda.");
+                return;
+            }
+
+            // Definindo as taxas de câmbio
+            var taxaEuro = 5.96;
+            var taxaDolar = 5.75;
+            var taxaLibra = 7.45;  // Escolhi a libra como moeda adicional
+
+            var resultadoConversao;
+
+            // Realizar a conversão com base na moeda selecionada
+            if (moedaSelecionada === "euro") {
+                resultadoConversao = valorEmReais / taxaEuro;
+                resultadoConversao = resultadoConversao.toFixed(2);  // Arredondar para 2 casas decimais
+                document.getElementById('resultado').innerText = "R$ " + valorEmReais + " é igual a € " + resultadoConversao + " (Euro)";
+            } else if (moedaSelecionada === "dolar") {
+                resultadoConversao = valorEmReais / taxaDolar;
+                resultadoConversao = resultadoConversao.toFixed(2);
+                document.getElementById('resultado').innerText = "R$ " + valorEmReais + " é igual a $ " + resultadoConversao + " (Dólar)";
+            } else if (moedaSelecionada === "libra") {
+                resultadoConversao = valorEmReais / taxaLibra;
+                resultadoConversao = resultadoConversao.toFixed(2);
+                document.getElementById('resultado').innerText = "R$ " + valorEmReais + " é igual a £ " + resultadoConversao + " (Libra Esterlina)";
+            }
+        }
+    </script>
+
+</body>
+</html> 

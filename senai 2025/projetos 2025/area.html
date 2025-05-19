@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let area = 0; //inicializar
+        alert("Área do Retângulo!");
+        let base = parseInt(prompt("Base: "));
+        let altura = parseInt(prompt("Altura: "));
+        try{
+            if ((base < 0 || altura < 0) 
+            && (base instanceof Number || altura instanceof Number)){
+                alert("Digite numeros inteiros positivos!")
+            } else {
+                area = base * altura;
+                alert("Área do retângulo é " + area);
+                console.log("Área do retângulo é "+ area);
+            }
+        } catch (erro) {
+            console.log("Ocorreu um erro", erro.messagem)
+        }
+    </script>
+</body>
+</html>

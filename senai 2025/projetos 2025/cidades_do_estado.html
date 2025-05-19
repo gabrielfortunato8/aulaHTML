@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha sua Cidade</title>
+</head>
+<body onload="load_estados();">
+    <form>
+        <h3>Escolha sua cidade</h3>
+
+        <!-- Selecione para escolher o estado -->
+        <label>Estado</label>
+        <select id="estado" name="estado" onchange="load_cidades();">
+            <option value="">Escolha um estado</option>
+        </select>
+        <p></p>
+
+        <!-- Selecione para escolher a cidade -->
+        <label>Cidade</label>
+        <select id="cidade" name="cidade">
+            <option value="">Escolha uma cidade</option>
+        </select>
+    </form>
+
+    <script>
+        // Objeto com as cidades associadas aos estados
+        var cidades = {
+            "São Paulo": ["São Paulo", "Barretos", "Diadema"],
+            "Rio de Janeiro": ["Cabo Frio", "Rio de Janeiro"],
+            "Goiás": ["Catalão", "Itumbiara"],
+            "Minas Gerais": ["Tupaciguara", "Belo Horizonte"]
+        };
+
+        // Função que carrega os estados no selectbox ao carregar a página
+        function load_estados() {
+            let estados = ["SP", "RJ", "GO", "MG"];  // Lista de siglas dos estados
+            let box = document.getElementById("estado");
+            for (let e of estados) {
+                let op = document.createElement("option");
+                op.value = e;
+                op.innerHTML = get_nome_estado(e);
+                box.appendChild(op);
+            }
+        }
+
+        // Função que carrega as cidades no selectbox de acordo com o estado selecionado
+        function load_cidades() {
+            let estado = document.getElementById("estado").value;
+            let box = document.getElementById("cidade");
+            box.innerHTML = "<option value=''>Escolha uma cidade</option>"; // Limpa as cidades anteriores
+
+            if (estado) {
+                let cidades_do_estado = cidades[get_nome_estado(estado)];
+                for (let cidade of cidades_do_estado) {
+                    let op = document.createElement("option");
+                    op.value = cidade;
+                    op.innerHTML = cidade;
+                    box.appendChild(op);
+                }
+            }
+        }
+
+        // Função que retorna o nome completo do estado a partir da sigla
+        function get_nome_estado(sigla) {
+            const estados = {
+                "SP": "São Paulo",
+                "RJ": "Rio de Janeiro",
+                "GO": "Goiás",
+                "MG": "Minas Gerais"
+            };
+            return estados[sigla];
+        }
+    </script>
+</body>
+</html>

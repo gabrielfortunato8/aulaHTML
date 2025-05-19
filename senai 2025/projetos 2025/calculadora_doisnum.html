@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de dois números</title>
+</head>
+<body>
+    <div class="canva">
+        <form method="dialog">
+            <label>Número 1</label>
+            <input type="number" step="1" id="num1" required/>
+            <br>
+            <label>Número 2</label>
+            <input type="number" step="1" id="num2" required/>
+            <br>
+            <h3 id="resultado"></h3>
+            <br>
+            <div class="botoes">
+                <input type="radio" name="operador" value="+" />+<br>
+                <input type="radio" name="operador" value="-" />-<br>
+                <input type="radio" name="operador" value="*" />*<br>
+                <input type="radio" name="operador" value="/" />/<br>
+                <input type="radio" name="operador" value="raiz" />Raiz<br>
+                <input type="radio" name="operador" value="%" />%<br>
+                
+                <button type="button" onclick="igual()">=</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let operador = null;
+
+        document.querySelectorAll("input[name=operador]").forEach(function(checkbox){
+            checkbox.addEventListener("change", (event) => {
+                operador = event.target.value;
+            });
+        });
+
+        let resultado = document.getElementById("resultado");
+
+        function igual() {
+            let num1 = parseFloat(document.getElementById("num1").value);
+            let num2 = parseFloat(document.getElementById("num2").value);
+
+            if (operador === null) {
+                alert("Escolha uma operação");
+                return;
+            }
+            if (isNaN(num1) || isNaN(num2)) {
+                alert("Por favor, insira números válidos.");
+                return;
+            }
+
+            switch (operador) {
+                case "+":
+                    soma(num1, num2);
+                    break;
+                case "-":
+                    subtracao(num1, num2);
+                    break;
+                case "*":
+                    multiplicacao(num1, num2);
+                    break;
+                case "/":
+                    divisao(num1, num2);
+                    break;
+                case "raiz":
+                    raiz(num1);
+                    break;
+                case "%":
+                    porcentagem(num1, num2);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function soma(num1, num2) {
+            resultado.innerHTML = num1 + num2;
+        }
+
+        function subtracao(num1, num2) {
+            resultado.innerHTML = num1 - num2;
+        }
+
+        function multiplicacao(num1, num2) {
+            resultado.innerHTML = num1 * num2;
+        }
+
+        function divisao(num1, num2) {
+            if (num2 === 0) {
+                resultado.innerHTML = "Erro: Divisão por zero";
+            } else {
+                resultado.innerHTML = num1 / num2;
+            }
+        }
+
+        function raiz(num1) {
+            resultado.innerHTML = Math.sqrt(num1);
+        }
+
+        function porcentagem(num1, num2) {
+            resultado.innerHTML = (num1 * num2) / 100;
+        }
+    </script>
+</body>
+</html>

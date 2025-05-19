@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Placar de um Jogo de Futebol</title>
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      background-color: #af574c;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #resultado {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+  <script>
+    function verificarResultado() {
+      const golsTime1 = parseInt(document.getElementById('gols1').value);
+      const golsTime2 = parseInt(document.getElementById('gols2').value);
+      let resultado = '';
+
+      if (isNaN(golsTime1) || isNaN(golsTime2)) {
+        resultado = 'Por favor, insira valores válidos para ambos os times.';
+      } else if (golsTime1 > golsTime2) {
+        resultado = 'Vitória do time 1!!!';
+      } else if (golsTime2 > golsTime1) {
+        resultado = 'Vitória do time 2!!!';
+      } else {
+        resultado = 'Empate!';
+      }
+      
+      document.getElementById('resultado').innerText = resultado;
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Placar do Jogo de Futebol</h1>
+    <label for="gols1">Gols do Time 1:</label>
+    <input type="number" id="gols1" name="gols1">
+    
+    <label for="gols2">Gols do Time 2:</label>
+    <input type="number" id="gols2" name="gols2">
+    
+    <button onclick="verificarResultado()">Verificar Resultado</button>
+    
+    <p id="resultado"></p>
+  </div>
+</body>
+</html>

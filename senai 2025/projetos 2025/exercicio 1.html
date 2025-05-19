@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Responsivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header, footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            main {
+                flex-direction: row;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Meu Site Responsivo</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Conteúdo Principal</h2>
+            <p>Texto do conteúdo principal.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Meu Site</p>
+    </footer>
+</body>
+</html>

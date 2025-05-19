@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro do Aluno</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Formulário de Cadastro do Aluno -->
+    <h3>Cadastro do Aluno</h3>
+    <form id="formCadastroAluno">
+        <label>Nome do Aluno</label>
+        <input type="text" name="nome" id="nome" required />
+        <span id="mensagemNome"></span>
+        <br><br>
+
+        <label>Turma</label>
+        <input type="text" name="turma" id="turma" maxlength="10" required />
+        <br><br>
+
+        <label>Foto</label>
+        <input type="file" name="foto" id="foto" accept=".jpg, .png" />
+        <br><br>
+
+        <button type="button" onclick="validarCadastro();">Cadastrar</button>
+    </form>
+
+    <h1 id="mensagemCadastro"></h1>
+
+    <script>
+        // Função para validar o cadastro do aluno
+        function validarCadastro() {
+            let nome = document.getElementById("nome").value;
+            let turma = document.getElementById("turma").value;
+            let foto = document.getElementById("foto").value;
+            let mensagemNome = document.getElementById("mensagemNome");
+            let mensagemCadastro = document.getElementById("mensagemCadastro");
+
+            // Validação do nome (precisa ter mais de um nome)
+            if (nome.split(" ").length < 2) {
+                mensagemNome.innerHTML = "Por favor, insira o nome completo.";
+                mensagemNome.style.color = "red";
+                return;
+            } else {
+                mensagemNome.innerHTML = "";
+            }
+
+            // Validação da turma (máximo de 10 caracteres)
+            if (turma.length > 10) {
+                mensagemCadastro.innerHTML = "A turma deve ter no máximo 10 caracteres.";
+                mensagemCadastro.style.color = "red";
+                return;
+            }
+
+            // Validação da foto (aceitar somente arquivos jpg e png)
+            if (foto && !/\.(jpg|png)$/i.test(foto)) {
+                mensagemCadastro.innerHTML = "A foto deve ser um arquivo .jpg ou .png.";
+                mensagemCadastro.style.color = "red";
+                return;
+            }
+
+            mensagemCadastro.innerHTML = "Aluno cadastrado com sucesso!";
+            mensagemCadastro.style.color = "green";
+        }
+    </script>
+</body>
+</html>

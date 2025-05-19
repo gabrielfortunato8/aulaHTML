@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layout Responsivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 14px;
+            background: white;
+            color: black;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        header, footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        footer {
+            margin-top: auto; /* Garante que o footer ficará na parte inferior da tela */
+        }
+
+        nav {
+            display: none;
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 2rem;
+        }
+
+        .box {
+            background: #ddd;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 50%; /* Centraliza verticalmente */
+            left: 50%; /* Centraliza horizontalmente */
+            transform: translate(-50%, -50%); /* Ajusta para que o centro do botão fique no meio */
+            padding: 0.5rem 1rem;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #222;
+                color: white;
+            }
+        }
+
+        @media (min-width: 600px) {
+            body {
+                font-size: 16px;
+            }
+            main {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                font-size: 18px;
+            }
+            nav {
+                display: flex;
+                justify-content: center;
+                background: #444;
+                padding: 1rem;
+            }
+            nav ul {
+                list-style: none;
+                display: flex;
+                gap: 1rem;
+            }
+            nav ul li a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+            }
+            main {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Alternar Tema</button>
+    <header>
+        <h1>Meu Site Responsivo</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Início</a></li>
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Serviços</a></li>
+            <li><a href="#">Contato</a></li>
+        </ul>
+    </nav>
+    <footer>
+        <p>&copy; 2025 Meu Site</p>
+    </footer>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.style.background = '#222';
+                document.body.style.color = 'white';
+            } else {
+                document.body.style.background = 'white';
+                document.body.style.color = 'black';
+            }
+        }
+    </script>
+</body>
+</html>

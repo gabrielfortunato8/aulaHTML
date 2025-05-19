@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Me corrija</title>
+</head>
+<body>
+    <h1>Me corrija!</h1>
+
+    <table id="tabela" border="1">
+        <tr>
+            <th>ID</th><th>First Name</th><th>Last Name</th>
+        </tr>
+        
+    </table>
+
+    <scropt>
+        var dados = [
+		{
+			"id":"1",		
+			"first_name":"Jamie",		
+			"last_name":"Rosenbaum"		
+		},
+		{
+			"id":"2",		
+			"first_name":"Arlene",		
+			"last_name":"Hettinger"		
+		},
+		{
+			"id":"3",		
+			"first_name":"Orlando",		
+			"last_name":"Friesen"		
+		},
+		{
+			"id":"4",		
+			"first_name":"Jennie",		
+			"last_name":"Mertz"		
+		},
+		{
+			"id":"5",		
+			"first_name":"Leland",		
+			"last_name":"Lemke"		
+		},
+		{
+			"id":"6",		
+			"first_name":"Joshua",		
+			"last_name":"Conn"		
+		},
+		{
+			"id":"7",		
+			"first_name":"Darrell",		
+			"last_name":"Jenkins"		
+		},
+		{
+			"id":"8",		
+			"first_name":"Lucia",		
+			"last_name":"Kreiger"		
+		},
+		{
+			"id":"9",		
+			"first_name":"Deborah",		
+			"last_name":"Okuneva"		
+		},
+		{
+			"id":"10",		
+			"first_name":"Darin",		
+			"last_name":"McKenzie"		
+		}
+    ]
+
+    let tabela = document.getElementById(""); //acessar tabela
+
+    for (dado of dados){
+        //criando uma tag com javascript
+        let tr = document.create("tr"); //cria uma linha na tabela
+        //cria primeira coluna
+        let td = document.createElement("td");
+        td.innerHTML = dado; //adiciona o id na coluna
+        tr.appendChild(td); //adiciona td ao tr <tr><td>1</td></tr>...
+
+        //adicionar linha na tabela
+        tabela;
+
+        //adicione as outras colunas
+        td = document.createElement("td");
+        td.innerHTML = dado.first_name; //adiciona o id na coluna
+        
+    }
+
+    </scropt>
+</body>
+</html>

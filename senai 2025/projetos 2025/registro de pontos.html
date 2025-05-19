@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Pontos</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h2>Registro de Pontos</h2>
+    <form id="registroPontos">
+        <label for="data">Data:</label>
+        <input type="date" id="data" name="data" required>
+        <span id="dataErro" class="error"></span>
+        <br>
+
+        <label for="atividade">Atividade:</label>
+        <input type="text" id="atividade" name="atividade" required>
+        <span id="atividadeErro" class="error"></span>
+        <br>
+
+        <label for="pontuacao">Pontuação (0-100%):</label>
+        <input type="number" id="pontuacao" name="pontuacao" min="0" max="100" required>
+        <span id="pontuacaoErro" class="error"></span>
+        <br>
+
+        <button type="submit">Registrar</button>
+    </form>
+
+    <script>
+        document.getElementById("registroPontos").addEventListener("submit", function(event) {
+            let data = document.getElementById("data").value;
+            let atividade = document.getElementById("atividade").value.trim();
+            let pontuacao = document.getElementById("pontuacao").value;
+            let dataErro = document.getElementById("dataErro");
+            let atividadeErro = document.getElementById("atividadeErro");
+            let pontuacaoErro = document.getElementById("pontuacaoErro");
+            let valido = true;
+            
+            if (new Date(data) < new Date("2025-01-01")) {
+                dataErro.textContent = "A data deve ser a partir de 2025.";
+                valido = false;
+            } else {
+                dataErro.textContent = "";
+            }
+            
+            if (atividade === "") {
+                atividadeErro.textContent = "A atividade não pode estar vazia.";
+                valido = false;
+            } else {
+                atividadeErro.textContent = "";
+            }
+            
+            if (pontuacao < 0 || pontuacao > 100 || pontuacao === "") {
+                pontuacaoErro.textContent = "A pontuação deve estar entre 0 e 100%.";
+                valido = false;
+            } else {
+                pontuacaoErro.textContent = "";
+            }
+            
+            if (!valido) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

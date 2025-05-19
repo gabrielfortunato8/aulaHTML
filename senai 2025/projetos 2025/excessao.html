@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Divisão com Tratamento de Erro</title>
+</head>
+<body>
+    <h1>Exemplo de Divisão com Tratamento de Erro</h1>
+    <p>Veja o console do navegador para os resultados!</p>
+
+    <script>
+        function dividir(numerador, denominador) {
+            try {
+                if (denominador === 0) {
+                    throw new Error("Não é possível dividir por zero.");
+                }
+                return numerador / denominador;
+            } catch (erro) {
+                return erro.message;
+            }
+        }
+
+        console.log(dividir(10, 2));
+        console.log(dividir(10, 0));
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Erro em JavaScript</title>
+</head>
+<body>
+    <h1>Exemplo de Erro em JavaScript</h1>
+    <p>Veja o console do navegador para a mensagem de erro!</p>
+
+    <script>
+        try {
+            console.log(minhaVariavel);
+        } catch (erro) {
+            console.log("Erro: A variável não foi definida. Detalhes do erro: " + erro.message);
+        }
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Erro com Classe Personalizada</title>
+</head>
+<body>
+    <h1>Exemplo de Erro com Classe Personalizada de Idade</h1>
+    <p>Veja o console do navegador para os resultados!</p>
+
+    <script>
+        class ErroDeIdade extends Error {
+            constructor(message) {
+                super(message);
+                this.name = "ErroDeIdade";
+            }
+        }
+
+        function idade_valida(idade) {
+            try {
+                if (idade < 0 || idade > 120) {
+                    throw new ErroDeIdade("Idade inválida. A idade deve estar entre 0 e 120.");
+                }
+                return "Idade válida.";
+            } catch (erro) {
+                return erro.message;
+            }
+        }
+
+        console.log(validarIdade(25));
+        console.log(validarIdade(130));
+        console.log(validarIdade(-5));
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Erro com JSON.parse()</title>
+</head>
+<body>
+    <h1>Exemplo de Erro ao Usar JSON.parse()</h1>
+    <p>Veja o console do navegador para a mensagem de erro!</p>
+
+    <script>
+        try {
+            const data = JSON.parse('{"nome": "João", idade: 18}');
+        } catch (erro) {
+            console.log("Erro ao parsear o JSON: " + erro.message);
+        }
+    </script>
+</body>
+</html>
+
+

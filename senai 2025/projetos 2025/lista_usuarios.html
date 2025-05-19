@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários</title>
+    <style>
+       body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #e0f2f1; /* Verde claro */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #bbb;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #004d40; /* Verde escuro */
+    color: white;
+}
+
+img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+button {
+    padding: 6px 12px;
+    margin: 3px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+/* Novo estilo para os botões */
+.edit {
+    background-color: #ff9800; /* Laranja */
+    color: white;
+}
+
+.edit:hover {
+    background-color: #e68900; /* Laranja mais escuro ao passar o mouse */
+}
+
+.delete {
+    background-color: #d32f2f; /* Vermelho mais escuro */
+    color: white;
+}
+
+.delete:hover {
+    background-color: #b71c1c; /* Vermelho ainda mais escuro ao passar o mouse */
+}
+
+/* Efeito zebrado nas linhas da tabela */
+tr:nth-child(even) {
+    background-color: #f1f8e9; /* Verde bem claro */
+}
+
+/* Efeito ao passar o mouse */
+tr:hover {
+    background-color: #c8e6c9; /* Verde mais forte */
+}
+
+    </style>
+</head>
+<body>
+
+<h2>Lista de Usuários</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Avatar</th>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody id="userTable">
+        <!-- Os dados serão inseridos aqui via JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    const usuarios = [
+        {
+            "id": "1",
+            "nome": "WillieDietrich",
+            "email": "Dennis.Hintz47@yahoo.com",
+            "status": "false",
+            "avatar": "https://avatars.githubusercontent.com/u/719727"
+        },
+        {
+            "id": "2",
+            "nome": "AngelTrantowSr.",
+            "email": "Sidney_Stokes@yahoo.com",
+            "status": "false",
+            "avatar": "https://avatars.githubusercontent.com/u/71972754"
+        },
+        {
+            "id": "3",
+            "nome": "LorenzoHickle",
+            "email": "Jacob.Mitchell@yahoo.com",
+            "status": "true",
+            "avatar": "https://avatars.githubusercontent.com/u/1634540"
+        }
+        // Adicione mais usuários conforme necessário...
+    ];
+
+    function carregarUsuarios() {
+        const tabela = document.getElementById("userTable");
+
+        usuarios.forEach(user => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td><img src="${user.avatar}" alt="Avatar"></td>
+                <td>${user.id}</td>
+                <td>${user.nome}</td>
+                <td>${user.email}</td>
+                <td>${user.status === "true" ? "Ativo" : "Inativo"}</td>
+                <td>
+                    <button class="edit" onclick="editarUsuario(${user.id})">Editar</button>
+                    <button class="delete" onclick="excluirUsuario(${user.id})">Excluir</button>
+                </td>
+            `;
+            tabela.appendChild(row);
+        });
+    }
+
+    function editarUsuario(id) {
+        alert("Editar usuário ID: " + id);
+    }
+
+    function excluirUsuario(id) {
+        if (confirm("Tem certeza que deseja excluir o usuário ID: " + id + "?")) {
+            alert("Usuário excluído!");
+        }
+    }
+
+    carregarUsuarios();
+</script>
+
+</body>
+</html>

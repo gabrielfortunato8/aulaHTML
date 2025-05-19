@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor</title>
+</head>
+<body>
+    <form>
+        <h3>Conversor de moeda</h3>
+        <label>Dólar</label>
+        <input type="number" step="0.1" name="dolar" id="dolar" />
+        <p>Para</p>
+        <label>Real</label>
+        <input type="number" step="0.1" name="real" id="real" disabled />
+        <br><br>
+        <button type="button" onclick="converter();">Converter</button>
+    </form>
+    <script>
+        function converter(){
+            let dolar = document.getElementById("dolar").value;
+            let real = document.getElementById("real");
+            let aliquota = 5.82; 
+
+            real.value = dolar * aliquota;
+        }
+    </script>
+</body>
+</html>

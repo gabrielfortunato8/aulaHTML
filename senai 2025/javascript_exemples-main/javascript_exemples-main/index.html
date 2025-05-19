@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo</title>
+    <style>
+        .canva {
+            background-color: yellowgreen;
+            height: 350px;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .box {
+            height: 150px;
+            width: 100px;
+            position: absolute;
+        }
+        #mensagem {
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+            background-color: #4CAF50; /* Verde chamativo */
+            border: 3px solid #2E7D32; /* Borda mais escura */
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: fit-content;
+            margin: 10px auto;
+            display: none; /* Escondida até que o jogador vença */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canva" class="control">
+        <button onclick="onBtnUp();">&uarr;</button>
+        <button onclick="onBtnLeft();">&larr;</button>
+        <button onclick="onBtnRight();">&rarr;</button>
+        <button onclick="onBtnDown();">&darr;</button>
+        <button onclick="onBtnJump();">Pular</button>
+    </div>
+    <hr>
+    <div class="canva" id="gameArea">
+        <img src="coragem.jfif" id="box" class="box" style="left: 0px; top: 200px;">
+    </div>
+
+    <p id="mensagem">🎉 Parabéns, você conseguiu! 🎉</p> <!-- Mensagem oculta inicialmente -->
+
+    <script>
+        function onBtnRight() {
+            let box = document.getElementById("box");
+            let gameArea = document.getElementById("gameArea");
+            let mensagem = document.getElementById("mensagem");
+            let posicao_atual = parseInt(box.style.left) || 0;
+            let limite = gameArea.clientWidth - box.clientWidth;
+
+            if (posicao_atual < limite) {
+                box.style.left = (posicao_atual + 10) + "px";
+            }
+
+            if (posicao_atual + 10 >= limite) {
+                mensagem.style.display = "block";
+                setTimeout(() => mensagem.style.opacity = "1", 100);
+            }
+        }
+
+        function onBtnLeft() {
+            let box = document.getElementById("box");
+            let posicao_atual = parseInt(box.style.left) || 0;
+            if (posicao_atual > 0) {
+                box.style.left = (posicao_atual - 10) + "px";
+            }
+        }
+
+        function onBtnDown() {
+            let box = document.getElementById("box");
+            let gameArea = document.getElementById("gameArea");
+            let posicao_atual = parseInt(box.style.top) || 0;
+            let limite = gameArea.clientHeight - box.clientHeight;
+
+            if (posicao_atual < limite) {
+                box.style.top = (posicao_atual + 10) + "px";
+            }
+        }
+
+        function onBtnUp() {
+            let box = document.getElementById("box");
+            let posicao_atual = parseInt(box.style.top) || 0;
+            if (posicao_atual > 0) {
+                box.style.top = (posicao_atual - 10) + "px";
+            }
+        }
+
+        function onBtnJump() {
+            let box = document.getElementById("box");
+            let posicao_atual = parseInt(box.style.top) || 200;
+            let altura_pulo = 50;
+            let duracao_pulo = 200;
+
+            function animarPulo(alvo, tempo, callback) {
+                let inicio = null;
+
+                function step(timestamp) {
+                    if (!inicio) inicio = timestamp;
+                    let progresso = Math.min(1, (timestamp - inicio) / tempo);
+                    let movimento = alvo * Math.sin(progresso * Math.PI);
+                    box.style.top = (posicao_atual - movimento) + "px";
+
+                    if (progresso < 1) {
+                        requestAnimationFrame(step);
+                    } else if (callback) {
+                        callback();
+                    }
+                }
+
+                requestAnimationFrame(step);
+            }
+
+            animarPulo(altura_pulo, duracao_pulo, () => {
+                animarPulo(-altura_pulo, duracao_pulo);
+            });
+        }
+    </script>
+
+</body>
+</html>
