@@ -6,14 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Interface Responsiva</title>
   <style>
-    /* Reset básico */
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
     
-    /* Estilos gerais com unidades relativas */
     body {
       font-family: Arial, sans-serif;
       font-size: 1rem;
@@ -34,15 +33,13 @@
       padding: 1rem;
       text-align: center;
     }
-    
-    /* Navegação */
+ 
     nav {
       background-color: #444;
       padding: 0.5rem 1rem;
       position: relative;
     }
     
-    /* Lista do menu */
     nav ul {
       list-style: none;
       display: flex;
@@ -56,7 +53,6 @@
       padding: 0.5rem 1rem;
     }
     
-    /* Hamburger menu - oculto em telas maiores */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -71,7 +67,6 @@
       border-radius: 0.125rem;
     }
     
-    /* Checkbox escondido que controla o menu */
     #menu-toggle {
       display: none;
     }
@@ -85,7 +80,7 @@
     
     .carousel-inner {
       display: flex;
-      width: 300%;
+      width: 50%;
       animation: slide 15s infinite;
     }
     
@@ -97,7 +92,7 @@
     .carousel-item img {
     width: 100%;
     height: auto;
-    max-height: 400px; /* ou outro valor como 300px */
+    max-height: 400px; 
     object-fit: cover;
     display: block;
     }    
@@ -110,14 +105,12 @@
       100% { transform: translateX(-200%); }
     }
     
-    /* Media Queries para telas menores */
     @media (max-width: 768px) {
       nav ul {
         flex-direction: column;
         display: none;
       }
       
-      /* Exibe o menu quando o checkbox estiver marcado */
       #menu-toggle:checked + nav ul {
         display: flex;
       }
@@ -134,7 +127,7 @@
   </header>
   
   <div class="container">
-    <!-- Checkbox para controlar o menu hamburguer -->
+
     <input type="checkbox" id="menu-toggle">
     <label class="hamburger" for="menu-toggle">
       <span></span>
@@ -154,14 +147,13 @@
     <main>
       <section>
         <h2 style="margin: 1rem 0;">Conteúdo Principal</h2>
-        <p>Este layout é responsivo e utiliza unidades relativas, como em, rem e %, permitindo que os elementos se adaptem a diferentes tamanhos de tela.</p>
+        <p>Messi em um carrosel interativo permitindo-se adaptar em vários tamanhos.</p>
       </section>
       
-      <!-- Carrossel de Imagens Responsivo -->
       <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="..//exercicios junho/messi1.jpg" class="d-block w-100" alt="Imagem 1">
+                <img src="..//exercicios junho/messi1.jpg" class="d-block w-1" alt="Imagem 1">
             </div>
             <div class="carousel-item">
                 <img src="..//exercicios junho/messi3.jpg" class="d-block w-100" alt="Imagem 2">

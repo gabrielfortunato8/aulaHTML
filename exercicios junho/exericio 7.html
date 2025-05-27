@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exemplos de Interfaces Web consumindo APIs</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    section { margin-bottom: 40px; }
+    input { padding: 5px; margin: 5px 0; }
+    button { padding: 5px 10px; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 5px 0; border-bottom: 1px solid #ddd; }
+    .error { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Interfaces Web com APIs</h1>
+
+  <!-- 1. Buscar dados de API pública -->
+  <section id="public-api">
+    <h2>1. Buscar dados de API pública</h2>
+    <button id="load-posts">Carregar Posts Públicos</button>
+    <ul id="posts-list"></ul>
+  </section>
+
+  <!-- 2. Campo de busca e filtro -->
+  <section id="filter-api">
+    <h2>2. Campo de busca e filtro</h2>
+    <input type="text" id="search-input" placeholder="Buscar usuário..." />
+    <ul id="filtered-users"></ul>
+  </section>
+
+  <!-- 3. Sistema de login fictício -->
+  <section id="login-api">
+    <h2>3. Sistema de login (API fictícia)</h2>
+    <input type="text" id="username" placeholder="Usuário" />
+    <input type="password" id="password" placeholder="Senha" />
+    <button id="login-btn">Login</button>
+    <p class="error" id="login-error"></p>
+  </section>
+
+  <!-- 4. Lista de usuários -->
+  <section id="user-list">
+    <h2>4. Lista de Usuários</h2>
+    <button id="load-users">Carregar Usuários</button>
+    <ul id="users-list"></ul>
+  </section>
+
+  <!-- 5. Previsão do tempo -->
+  <section id="weather">
+    <h2>5. Previsão do Tempo</h2>
+    <button id="get-weather">Mostrar Previsão</button>
+    <div id="weather-info"></div>
+  </section>
+
+  <script>
+    // 1. Buscar dados de API pública (JSONPlaceholder)
+    document.getElementById('load-posts').addEventListener('click', () => {
+      fetch('https://jsonplaceholder.typicode.com/posts')
+        .then(res => res.json())
+        .then(posts => {
+          const ul = document.getElementById('posts-list');
+          ul.innerHTML = '';
+          posts.slice(0, 5).forEach(p => {
+            const li = document.createElement('li');
+            li.textContent = p.title;
+            ul.appendChild(li);
+          });
+        })
+        .catch(err => console.error('Erro ao carregar posts:', err));
+    });
+
+    // 2. Campo de busca e filtro (users)
+    let allUsers = [];
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(res => res.json())
+      .then(users => allUsers = users)
+      .catch(err => console.error('Erro ao carregar usuários:', err));
+
+    document.getElementById('search-input').addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      const filtered = allUsers.filter(u => u.name.toLowerCase().includes(term));
+      const ul = document.getElementById('filtered-users');
+      ul.innerHTML = '';
+      filtered.forEach(u => {
+        const li = document.createElement('li');
+        li.textContent = u.name;
+        ul.appendChild(li);
+      });
+    });
+
+    // 3. Sistema de login fictícia
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const user = document.getElementById('username').value;
+      const pass = document.getElementById('password').value;
+      fetch('https://jsonplaceholder.typicode.com/users?username=' + user)
+        .then(res => res.json())
+        .then(data => {
+          const errorEl = document.getElementById('login-error');
+          if (data.length && pass === 'senha123') {
+            errorEl.textContent = 'Login bem-sucedido! Bem-vindo, ' + user;
+            errorEl.classList.remove('error');
+          } else {
+            errorEl.textContent = 'Usuário ou senha inválidos.';
+            errorEl.classList.add('error');
+          }
+        })
+        .catch(err => console.error('Erro no login:', err));
+    });
+
+    // 4. Lista de usuários
+    document.getElementById('load-users').addEventListener('click', () => {
+      fetch('https://jsonplaceholder.typicode.com/users')
+        .then(res => res.json())
+        .then(users => {
+          const ul = document.getElementById('users-list');
+          ul.innerHTML = '';
+          users.forEach(u => {
+            const li = document.createElement('li');
+            li.textContent = `${u.name} (${u.email})`;
+            ul.appendChild(li);
+          });
+        })
+        .catch(err => console.error('Erro ao carregar lista de usuários:', err));
+    });
+
+    // 5. Previsão do tempo (OpenWeatherMap)
+    document.getElementById('get-weather').addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        document.getElementById('weather-info').textContent = 'Geolocalização não suportada.';
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const { latitude, longitude } = pos.coords;
+          const apiKey = 'SUA_CHAVE_OPENWEATHER'; // ⚠️ Insira aqui sua chave válida
+          const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&lang=pt_br&appid=${apiKey}`;
+          fetch(url)
+            .then(res => {
+              if (!res.ok) throw new Error(res.statusText);
+              return res.json();
+            })
+            .then(data => {
+              document.getElementById('weather-info').innerHTML = `
+                <p>Local: ${data.name}</p>
+                <p>Temperatura: ${data.main.temp}°C</p>
+                <p>Condição: ${data.weather[0].description}</p>
+              `;
+            })
+            .catch(err => {
+              console.error('Erro no fetch do clima:', err);
+              document.getElementById('weather-info').textContent = 'Não foi possível obter a previsão: ' + err.message;
+            });
+        },
+        err => {
+          console.error('Erro de geolocalização:', err);
+          document.getElementById('weather-info').textContent = 'Erro: ' + err.message;
+        }
+      );
+    });
+  </script>
+</body>
+</html>

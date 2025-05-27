@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Styling Techniques Demo</title>
+  <style>
+    /* 1. CSS Grid Layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      grid-template-rows: auto;
+      grid-template-areas:
+        "sidebar main"
+        "sidebar footer";
+      gap: 20px;
+      min-height: 100vh;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .sidebar {
+      grid-area: sidebar;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .main {
+      grid-area: main;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .footer {
+      grid-area: footer;
+      background: #fff;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 2. Animated Button using @keyframes */
+    .btn-animate {
+      display: inline-block;
+      padding: 12px 24px;
+      margin: 10px 0;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      border-radius: 4px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    /* 3. Box-Shadow for depth */
+    .card {
+      background: #fff;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+    }
+
+    /* 4. Clip-path shaped button */
+    .btn-clip {
+      display: inline-block;
+      padding: 14px 28px;
+      background: #e74c3c;
+      color: #fff;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+    }
+
+    /* 5. Styled Form (focus and placeholder) */
+    .styled-form input,
+    .styled-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.3s;
+      font-size: 1rem;
+    }
+    .styled-form input:focus,
+    .styled-form textarea:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    }
+    .styled-form input::placeholder,
+    .styled-form textarea::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <aside class="sidebar">
+      <h2>Sidebar</h2>
+      <p>Navigation or links here.</p>
+      <button class="btn-animate">Pulse Button</button>
+      <button class="btn-clip">Clip Button</button>
+    </aside>
+
+    <main class="main">
+      <h1>Main Content</h1>
+      <div class="card">
+        <h3>Card Title</h3>
+        <p>This card uses box-shadow for depth.</p>
+      </div>
+      <form class="styled-form">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" />
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="4" placeholder="Write your message"></textarea>
+
+        <button type="submit" class="btn-animate">Submit</button>
+      </form>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; 2025 Web Styling Demo</p>
+    </footer>
+  </div>
+</body>
+</html>

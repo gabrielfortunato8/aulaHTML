@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UX/UI na Prática</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f8f9fa; }
+    h1, h2 { margin-top: 30px; }
+    .box { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, button { padding: 10px; margin-top: 5px; width: 100%; box-sizing: border-box; }
+    .form-mobile { display: flex; flex-direction: column; gap: 10px; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .half { flex: 1 1 48%; }
+    .accessible-form input:focus { outline: 2px solid #007bff; }
+  </style>
+</head>
+<body>
+
+  <h1>UX / UI na Prática</h1>
+
+  <!-- 1. Diferença entre UX e UI -->
+  <div class="box">
+    <h2>1. Diferença entre UX e UI</h2>
+    <ul>
+      <li> UI é a Interface do Usuário, ou seja, é o que promove a interação dos usuários com o produto, seja um site, um teclado ou a tela de exibição de um celular. </li>
+      <br>
+      <li> UX é a Experiência do Usuário, que vai além da parte física, focando na experiência sensorial do usuário. Desde as percepções dele sobre a marca, produto ou serviço, até o momento que ele o utiliza.  </li>
+    </ul>
+  </div>
+
+  <!-- 2. Análise Airbnb -->
+  <div class="box">
+    <h2>2. Análise UX/UI - Airbnb</h2>
+    <img src="..//exercicios junho/airbnb.jpg" class="d-block w-100" alt="Imagem 1">
+  </div>
+
+  <!-- 3. Redesign de formulário -->
+  <div class="box">
+    <h2>3. Redesign de Formulário Mal Estruturado</h2>
+    Nome:
+    <p></p>Email:
+    <p></p>Telefone:
+    <p></p>Mensagem:
+    <p></p>Enviar
+
+    <h2>3. Redesign de Formulário Redesenhado</h2>
+    <form aria-labelledby="contatoTitulo">
+  <h2 id="contatoTitulo">Fale conosco</h2>
+  
+  <label for="nome">Nome completo *</label>
+  <input type="text" id="nome" name="nome" required aria-required="true" />
+  
+  <label for="email">Email *</label>
+  <input type="email" id="email" name="email" required aria-required="true" />
+  
+  <label for="telefone">Telefone (opcional)</label>
+  <input type="tel" id="telefone" name="telefone" />
+  
+  <label for="mensagem">Sua mensagem *</label>
+  <textarea id="mensagem" name="mensagem" required aria-required="true"></textarea>
+  
+  <button type="submit">Enviar mensagem</button>
+</form>
+
+  </div>
+
+  <!-- 4. Teste A/B de Botão -->
+  <div class="box">
+    <h2>4. Teste A/B de Botão</h2>
+    <div class="row">
+      <button id="btnA" class="half" style="background: rgb(11, 11, 17); color: white;">Clique Aqui</button>
+      <button id="btnB" class="half" style="background: green; color: white;">Clique Aqui</button>
+    </div>
+    <p>Cliques no botão A: <span id="clicksA">0</span></p>
+    <p>Cliques no botão B: <span id="clicksB">0</span></p>
+  </div>
+
+  <!-- 5. Simulação de cadastro para mobile -->
+  <div class="box">
+    <h2>5. Fluxo de Cadastro para Mobile</h2>
+    <form class="form-mobile">
+      <input type="text" placeholder="Nome" required />
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Criar senha" required />
+      <button type="submit">Concluir Cadastro</button>
+    </form>
+  </div>
+
+  <!-- 6. Formulário Acessível -->
+  <div class="box">
+    <h2>6. Formulário Acessível</h2>
+    <form class="accessible-form" aria-label="Formulário de cadastro acessível">
+      <label for="a-nome">Nome completo:</label>
+      <input id="a-nome" type="text" aria-required="true" />
+
+      <label for="a-email">Email:</label>
+      <input id="a-email" type="email" aria-required="true" />
+
+      <button type="submit" aria-label="Enviar cadastro">Enviar</button>
+    </form>
+  </div>
+
+  <script>
+    let clicksA = 0;
+    let clicksB = 0;
+
+    document.getElementById("btnA").onclick = () => {
+      clicksA++;
+      document.getElementById("clicksA").textContent = clicksA;
+    };
+
+    document.getElementById("btnB").onclick = () => {
+      clicksB++;
+      document.getElementById("clicksB").textContent = clicksB;
+    };
+  </script>
+
+</body>
+</html>
