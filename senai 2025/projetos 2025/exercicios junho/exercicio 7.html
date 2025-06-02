@@ -1,269 +1,153 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicação com Consumo de APIs</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Previsão do Tempo</title>
     <style>
         body {
-            padding: 20px;
-            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
         }
-        .tab-content {
-            padding: 20px;
-            background: white;
-            border: 1px solid #dee2e6;
-            border-top: none;
-            border-radius: 0 0 5px 5px;
-        }
-        .weather-card {
-            background: linear-gradient(135deg, #72b5f7, #4a6fa5);
-            color: white;
+
+        .weather-container {
+            background-color: #fff;
+            padding: 30px;
             border-radius: 10px;
-            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #0056b3;
             margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .user-card {
-            transition: all 0.3s;
+
+        .loading {
+            font-size: 1.2em;
+            color: #666;
         }
-        .user-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+
+        .weather-display {
+            margin-top: 20px;
         }
-        .search-results {
-            max-height: 400px;
-            overflow-y: auto;
+
+        #location-name {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .weather-details p {
+            font-size: 1.1em;
+            margin: 8px 0;
+        }
+
+        .weather-details span {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        #weather-icon {
+            width: 100px;
+            height: 100px;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center mb-4">Aplicação com Consumo de APIs</h1>
-        
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="weather-tab" data-bs-toggle="tab" data-bs-target="#weather" type="button">Previsão do Tempo</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="search-tab" data-bs-toggle="tab" data-bs-target="#search" type="button">Busca de Países</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button">Sistema de Login</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button">Lista de Usuários</button>
-            </li>
-        </ul>
-        
-        <div class="tab-content" id="myTabContent">
-            <!-- Previsão do Tempo -->
-            <div class="tab-pane fade show active" id="weather" role="tabpanel">
-                <div class="weather-card">
-                    <h2>Previsão do Tempo</h2>
-                    <p id="location">Obtendo sua localização...</p>
-                    <div id="weather-info" class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 id="temperature">--°C</h3>
-                            <p id="weather-description"></p>
-                        </div>
-                        <img id="weather-icon" src="" alt="" style="width: 80px; height: 80px;">
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-md-3">
-                            <p><strong>Umidade:</strong> <span id="humidity">--%</span></p>
-                        </div>
-                        <div class="col-md-3">
-                            <p><strong>Vento:</strong> <span id="wind">-- km/h</span></p>
-                        </div>
-                        <div class="col-md-3">
-                            <p><strong>Sensação:</strong> <span id="feels-like">--°C</span></p>
-                        </div>
-                        <div class="col-md-3">
-                            <p><strong>Pressão:</strong> <span id="pressure">-- hPa</span></p>
-                        </div>
-                    </div>
-                </div>
+    <div class="weather-container">
+        <h1>Previsão do Tempo</h1>
+        <div id="loading" class="loading">Carregando localização...</div>
+        <div id="weather-display" class="weather-display" style="display: none;">
+            <h2 id="location-name"></h2>
+            <div class="weather-details">
+                <p>Temperatura: <span id="temperature"></span></p>
+                <p>Condição: <span id="condition"></span></p>
+                <p>Umidade: <span id="humidity"></span></p>
+                <p>Vento: <span id="wind-speed"></span></p>
             </div>
-            
-            <!-- Busca de Países -->
-            <div class="tab-pane fade" id="search" role="tabpanel">
-                <div class="mb-3">
-                    <input type="text" class="form-control" id="country-search" placeholder="Digite o nome de um país">
-                </div>
-                <div id="search-results" class="search-results row"></div>
-            </div>
-            
-            <!-- Sistema de Login -->
-            <div class="tab-pane fade" id="login" role="tabpanel">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title text-center">Login</h3>
-                                <form id="login-form">
-                                    <div class="mb-3">
-                                        <label for="username" class="form-label">Usuário</label>
-                                        <input type="text" class="form-control" id="username" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">Senha</label>
-                                        <input type="password" class="form-control" id="password" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
-                                </form>
-                                <div id="login-message" class="mt-3 text-center"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Lista de Usuários -->
-            <div class="tab-pane fade" id="users" role="tabpanel">
-                <div class="row" id="users-list"></div>
-            </div>
+            <img id="weather-icon" src="" alt="Ícone do tempo">
+        </div>
+        <div id="error-message" class="error-message" style="display: none;">
+            Não foi possível obter a previsão do tempo. Por favor, habilite a localização ou tente novamente.
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 1. Previsão do Tempo
-            function fetchWeather(lat, lon) {
-                // Substitua pela sua chave da OpenWeatherMap
-                const apiKey = 'SUA_CHAVE_API';
-                fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=pt_br&appid=${apiKey}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('location').textContent = `${data.name}, ${data.sys.country}`;
-                        document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°C`;
-                        document.getElementById('weather-description').textContent = data.weather[0].description;
-                        document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-                        document.getElementById('humidity').textContent = `${data.main.humidity}%`;
-                        document.getElementById('wind').textContent = `${Math.round(data.wind.speed * 3.6)} km/h`;
-                        document.getElementById('feels-like').textContent = `${Math.round(data.main.feels_like)}°C`;
-                        document.getElementById('pressure').textContent = `${data.main.pressure} hPa`;
-                    })
-                    .catch(error => {
-                        console.error('Erro ao obter dados do tempo:', error);
-                        document.getElementById('location').textContent = 'Não foi possível obter a previsão do tempo';
-                    });
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingElement = document.getElementById('loading');
+            const weatherDisplay = document.getElementById('weather-display');
+            const errorMessage = document.getElementById('error-message');
+
+            const locationName = document.getElementById('location-name');
+            const temperature = document.getElementById('temperature');
+            const condition = document.getElementById('condition');
+            const humidity = document.getElementById('humidity');
+            const windSpeed = document.getElementById('wind-speed');
+            const weatherIcon = document.getElementById('weather-icon');
+
+            // ** SUBSTITUA 'SUA_CHAVE_DE_API_OPENWEATHERMAP' PELA SUA CHAVE REAL **
+            const API_KEY = 'SUA_CHAVE_DE_API_OPENWEATHERMAP'; 
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
-                    fetchWeather(position.coords.latitude, position.coords.longitude);
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    loadingElement.style.display = 'none';
+                    fetchWeatherData(lat, lon);
+
                 }, error => {
-                    console.error('Erro ao obter localização:', error);
-                    // Coordenadas padrão (São Paulo) se o usuário negar permissão
-                    fetchWeather(-23.5505, -46.6333);
+                    console.error('Erro ao obter a localização:', error);
+                    loadingElement.style.display = 'none';
+                    errorMessage.style.display = 'block';
                 });
             } else {
-                console.log('Geolocalização não suportada pelo navegador');
-                fetchWeather(-23.5505, -46.6333);
+                loadingElement.style.display = 'none';
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Geolocalização não é suportada por este navegador.';
             }
 
-            // 2. Busca de Países
-            const countrySearch = document.getElementById('country-search');
-            const searchResults = document.getElementById('search-results');
+            async function fetchWeatherData(lat, lon) {
+                try {
+                    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt_br`;
+                    const response = await fetch(weatherUrl);
+                    const data = await response.json();
 
-            countrySearch.addEventListener('input', function(e) {
-                const searchTerm = e.target.value.trim();
-                if (searchTerm.length < 2) {
-                    searchResults.innerHTML = '';
-                    return;
-                }
+                    if (data.cod === 200) {
+                        locationName.textContent = data.name;
+                        temperature.textContent = `${data.main.temp}°C`;
+                        condition.textContent = data.weather[0].description;
+                        humidity.textContent = `${data.main.humidity}%`;
+                        windSpeed.textContent = `${data.wind.speed} m/s`;
+                        weatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                        weatherIcon.alt = data.weather[0].description;
 
-                fetch(`https://restcountries.com/v3.1/name/${searchTerm}`)
-                    .then(response => {
-                        if (!response.ok) throw new Error('País não encontrado');
-                        return response.json();
-                    })
-                    .then(data => {
-                        searchResults.innerHTML = '';
-                        data.forEach(country => {
-                            const card = document.createElement('div');
-                            card.className = 'col-md-4 mb-3';
-                            card.innerHTML = `
-                                <div class="card user-card h-100">
-                                    <img src="${country.flags.png}" class="card-img-top" alt="${country.name.common}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${country.name.common}</h5>
-                                        <p class="card-text">Capital: ${country.capital?.[0] || 'N/A'}</p>
-                                        <p class="card-text">População: ${country.population.toLocaleString()}</p>
-                                    </div>
-                                </div>
-                            `;
-                            searchResults.appendChild(card);
-                        });
-                    })
-                    .catch(error => {
-                        searchResults.innerHTML = `<div class="col-12 text-center py-3">${error.message}</div>`;
-                    });
-            });
-
-            // 3. Sistema de Login
-            const loginForm = document.getElementById('login-form');
-            const loginMessage = document.getElementById('login-message');
-
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-
-                // API fictícia (simulada)
-                loginMessage.textContent = 'Validando credenciais...';
-                loginMessage.className = 'mt-3 text-center text-info';
-
-                // Simulação de API com timeout
-                setTimeout(() => {
-                    if (username === 'admin' && password === '123456') {
-                        loginMessage.textContent = 'Login bem-sucedido!';
-                        loginMessage.className = 'mt-3 text-center text-success';
+                        weatherDisplay.style.display = 'block';
                     } else {
-                        loginMessage.textContent = 'Usuário ou senha incorretos';
-                        loginMessage.className = 'mt-3 text-center text-danger';
+                        errorMessage.style.display = 'block';
+                        console.error('Erro ao buscar dados do tempo:', data.message);
                     }
-                }, 1000);
-            });
-
-            // 4. Lista de Usuários
-            fetch('https://jsonplaceholder.typicode.com/users')
-                .then(response => response.json())
-                .then(users => {
-                    const usersList = document.getElementById('users-list');
-                    users.forEach(user => {
-                        const col = document.createElement('div');
-                        col.className = 'col-md-6 mb-3';
-                        col.innerHTML = `
-                            <div class="card user-card h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title">${user.name}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">${user.username}</h6>
-                                    <p class="card-text">
-                                        <strong>Email:</strong> ${user.email}<br>
-                                        <strong>Telefone:</strong> ${user.phone}<br>
-                                        <strong>Empresa:</strong> ${user.company.name}
-                                    </p>
-                                </div>
-                                <div class="card-footer bg-transparent">
-                                    <small class="text-muted">${user.address.city}, ${user.address.street}</small>
-                                </div>
-                            </div>
-                        `;
-                        usersList.appendChild(col);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao obter lista de usuários:', error);
-                    document.getElementById('users-list').innerHTML = `
-                        <div class="col-12 text-center py-5">
-                            <p class="text-danger">Não foi possível carregar a lista de usuários</p>
-                        </div>
-                    `;
-                });
+                } catch (error) {
+                    errorMessage.style.display = 'block';
+                    console.error('Erro na requisição da API do tempo:', error);
+                }
+            }
         });
     </script>
 </body>
