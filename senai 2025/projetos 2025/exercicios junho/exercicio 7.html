@@ -1,154 +1,412 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Previsão do Tempo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f2f5;
-            color: #333;
-        }
-
-        .weather-container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        h1 {
-            color: #0056b3;
-            margin-bottom: 20px;
-        }
-
-        .loading {
-            font-size: 1.2em;
-            color: #666;
-        }
-
-        .weather-display {
-            margin-top: 20px;
-        }
-
-        #location-name {
-            font-size: 1.8em;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .weather-details p {
-            font-size: 1.1em;
-            margin: 8px 0;
-        }
-
-        .weather-details span {
-            font-weight: bold;
-            color: #007bff;
-        }
-
-        #weather-icon {
-            width: 100px;
-            height: 100px;
-            margin-top: 20px;
-        }
-
-        .error-message {
-            color: #dc3545;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>API Interaction Demo</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 0;
+    background: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+  }
+  h1, h2 {
+    color: #1a73e8;
+  }
+  main {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: white;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+  }
+  section {
+    margin-bottom: 3rem;
+  }
+  .section-header {
+    border-bottom: 2px solid #1a73e8;
+    padding-bottom: 0.3rem;
+    margin-bottom: 1rem;
+  }
+  button {
+    cursor: pointer;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.3rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #155bb5;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    border: 1.8px solid #ccc;
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    border-color: #1a73e8;
+    outline: none;
+  }
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem 1.3rem;
+    margin: 0.5rem 0;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .user-list li,
+  .post-list li {
+    margin-bottom: 1rem;
+  }
+  .login-message,
+  .search-message,
+  .weather-message {
+    margin-top: 0.5rem;
+    font-weight: 600;
+  }
+  .error {
+    color: #d93025;
+  }
+  .success {
+    color: #188038;
+  }
+  .flex-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .input-group {
+    flex: 1 1 300px;
+    min-width: 250px;
+  }
+  .loader {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ccc;
+    border-top-color: #1a73e8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
 </head>
 <body>
-    <div class="weather-container">
-        <h1>Previsão do Tempo</h1>
-        <div id="loading" class="loading">Carregando localização...</div>
-        <div id="weather-display" class="weather-display" style="display: none;">
-            <h2 id="location-name"></h2>
-            <div class="weather-details">
-                <p>Temperatura: <span id="temperature"></span></p>
-                <p>Condição: <span id="condition"></span></p>
-                <p>Umidade: <span id="humidity"></span></p>
-                <p>Vento: <span id="wind-speed"></span></p>
-            </div>
-            <img id="weather-icon" src="" alt="Ícone do tempo">
-        </div>
-        <div id="error-message" class="error-message" style="display: none;">
-            Não foi possível obter a previsão do tempo. Por favor, habilite a localização ou tente novamente.
-        </div>
+<main>
+  <h1>Exemplos de Consumo de APIs com Fetch</h1>
+
+  <!-- 1. Fetch data from public API and display -->
+  <section id="fetch-data-section">
+    <h2 class="section-header">1. Buscar dados de uma API pública e exibir</h2>
+    <button id="btnFetchPosts">Buscar Posts Públicos</button>
+    <div id="postsContainer"></div>
+  </section>
+
+  <!-- 2. Search field to filter API data -->
+  <section id="search-filter-section">
+    <h2 class="section-header">2. Campo de busca para filtrar informações da API</h2>
+    <input type="text" id="searchInput" placeholder="Buscar posts por título..." autocomplete="off" />
+    <div id="searchMessage" class="search-message"></div>
+    <ul id="filteredPosts" class="post-list"></ul>
+  </section>
+
+  <!-- 3. Login system with fictitious API validation -->
+  <section id="login-section">
+    <h2 class="section-header">3. Sistema de login validado por API fictícia</h2>
+    <form id="loginForm" autocomplete="off">
+      <div class="input-group">
+        <input type="email" id="email" placeholder="Email" required />
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Senha" required minlength="4" />
+      </div>
+      <button type="submit">Entrar</button>
+      <span id="loginLoader" class="loader" style="display:none;"></span>
+    </form>
+    <div id="loginMessage" class="login-message"></div>
+  </section>
+
+  <!-- 4. List of users from JSON API -->
+  <section id="user-list-section">
+    <h2 class="section-header">4. Lista de usuários consumida de API JSON</h2>
+    <button id="btnFetchUsers">Buscar Usuários</button>
+    <ul id="userList" class="user-list"></ul>
+  </section>
+
+  <!-- 5. Weather forecast based on user location -->
+  <section id="weather-section">
+    <h2 class="section-header">5. Previsão do tempo baseada na localização do usuário</h2>
+    <button id="btnGetWeather">Obter Previsão do Tempo</button>
+    <div id="weatherMessage" class="weather-message"></div>
+    <div id="weatherInfo" class="card" style="display:none;">
+      <h3 id="weatherLocation"></h3>
+      <p><strong>Temperatura Atual:</strong> <span id="temperature"></span> °C</p>
+      <p><strong>Condição:</strong> <span id="weatherCondition"></span></p>
+      <p><strong>Vento:</strong> <span id="windSpeed"></span> km/h</p>
     </div>
+  </section>
+</main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loadingElement = document.getElementById('loading');
-            const weatherDisplay = document.getElementById('weather-display');
-            const errorMessage = document.getElementById('error-message');
+<script>
+  // 1. Fetch public posts and display their titles and bodies
+  const btnFetchPosts = document.getElementById('btnFetchPosts');
+  const postsContainer = document.getElementById('postsContainer');
 
-            const locationName = document.getElementById('location-name');
-            const temperature = document.getElementById('temperature');
-            const condition = document.getElementById('condition');
-            const humidity = document.getElementById('humidity');
-            const windSpeed = document.getElementById('wind-speed');
-            const weatherIcon = document.getElementById('weather-icon');
+  let allPosts = []; // for search filtering purpose
 
-            // ** SUBSTITUA 'SUA_CHAVE_DE_API_OPENWEATHERMAP' PELA SUA CHAVE REAL **
-            const API_KEY = 'SUA_CHAVE_DE_API_OPENWEATHERMAP'; 
+  btnFetchPosts.addEventListener('click', () => {
+    postsContainer.innerHTML = '<p>Carregando posts... <span class="loader"></span></p>';
+    fetch('https://jsonplaceholder.typicode.com/posts?_limit=10')
+      .then(res => res.json())
+      .then(posts => {
+        allPosts = posts;
+        displayPosts(posts);
+      })
+      .catch(() => {
+        postsContainer.innerHTML = '<p class="error">Erro ao carregar os posts.</p>';
+      });
+  });
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(position => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
+  function displayPosts(posts) {
+    if (!posts.length) {
+      postsContainer.innerHTML = '<p>Nenhum post encontrado.</p>';
+      return;
+    }
+    const html = posts.map(post => `
+      <article class="card">
+        <h3>${escapeHtml(post.title)}</h3>
+        <p>${escapeHtml(post.body)}</p>
+      </article>
+    `).join('');
+    postsContainer.innerHTML = html;
+  }
 
-                    loadingElement.style.display = 'none';
-                    fetchWeatherData(lat, lon);
+  // Escape HTML to prevent injection
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
 
-                }, error => {
-                    console.error('Erro ao obter a localização:', error);
-                    loadingElement.style.display = 'none';
-                    errorMessage.style.display = 'block';
-                });
-            } else {
-                loadingElement.style.display = 'none';
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = 'Geolocalização não é suportada por este navegador.';
-            }
+  // 2. Search filter input to filter posts by title from allPosts
+  const searchInput = document.getElementById('searchInput');
+  const filteredPosts = document.getElementById('filteredPosts');
+  const searchMessage = document.getElementById('searchMessage');
 
-            async function fetchWeatherData(lat, lon) {
-                try {
-                    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt_br`;
-                    const response = await fetch(weatherUrl);
-                    const data = await response.json();
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim().toLowerCase();
+    if (!allPosts.length) {
+      searchMessage.textContent = 'Por favor, busque os posts públicos primeiro (na seção 1).';
+      filteredPosts.innerHTML = '';
+      return;
+    }
+    if (!query) {
+      searchMessage.textContent = '';
+      filteredPosts.innerHTML = '';
+      return;
+    }
+    const filtered = allPosts.filter(post => post.title.toLowerCase().includes(query));
+    if (!filtered.length) {
+      searchMessage.textContent = 'Nenhum post corresponde à busca.';
+      filteredPosts.innerHTML = '';
+      return;
+    }
+    searchMessage.textContent = '';
+    filteredPosts.innerHTML = filtered.map(post => `<li><strong>${escapeHtml(post.title)}</strong><br />${escapeHtml(post.body)}</li>`).join('');
+  });
 
-                    if (data.cod === 200) {
-                        locationName.textContent = data.name;
-                        temperature.textContent = `${data.main.temp}°C`;
-                        condition.textContent = data.weather[0].description;
-                        humidity.textContent = `${data.main.humidity}%`;
-                        windSpeed.textContent = `${data.wind.speed} m/s`;
-                        weatherIcon.src = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-                        weatherIcon.alt = data.weather[0].description;
+  // 3. Login system with fictitious API validation
+  const loginForm = document.getElementById('loginForm');
+  const loginMessage = document.getElementById('loginMessage');
+  const loginLoader = document.getElementById('loginLoader');
 
-                        weatherDisplay.style.display = 'block';
-                    } else {
-                        errorMessage.style.display = 'block';
-                        console.error('Erro ao buscar dados do tempo:', data.message);
-                    }
-                } catch (error) {
-                    errorMessage.style.display = 'block';
-                    console.error('Erro na requisição da API do tempo:', error);
-                }
-            }
-        });
-    </script>
+  loginForm.addEventListener('submit', e => {
+    e.preventDefault();
+    loginMessage.textContent = '';
+    
+    const email = loginForm.email.value.trim();
+    const password = loginForm.password.value;
+
+    if (!email || !password) {
+      loginMessage.textContent = 'Preencha todos os campos.';
+      loginMessage.className = 'login-message error';
+      return;
+    }
+
+    loginLoader.style.display = 'inline-block';
+    // Simulate API call with delay:
+    fakeLoginApi(email, password).then(success => {
+      loginLoader.style.display = 'none';
+      if (success) {
+        loginMessage.textContent = 'Login realizado com sucesso!';
+        loginMessage.className = 'login-message success';
+        loginForm.reset();
+      } else {
+        loginMessage.textContent = 'Credenciais inválidas.';
+        loginMessage.className = 'login-message error';
+      }
+    });
+  });
+
+  // Fictitious API that only allows email: user@example.com, password: 1234
+  function fakeLoginApi(email, password) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        if (email.toLowerCase() === 'user@example.com' && password === '1234') {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 1200);
+    });
+  }
+
+  // 4. Fetch list of users and display names and emails
+  const btnFetchUsers = document.getElementById('btnFetchUsers');
+  const userList = document.getElementById('userList');
+
+  btnFetchUsers.addEventListener('click', () => {
+    userList.innerHTML = '<p>Carregando usuários... <span class="loader"></span></p>';
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(res => res.json())
+      .then(users => {
+        if (!users.length) {
+          userList.innerHTML = '<p>Nenhum usuário encontrado.</p>';
+          return;
+        }
+        const html = users.map(user => `
+          <li class="card">
+            <strong>${escapeHtml(user.name)}</strong><br/>
+            <a href="mailto:${escapeHtml(user.email)}">${escapeHtml(user.email)}</a><br/>
+            <small>${escapeHtml(user.company.name)}</small>
+          </li>
+        `).join('');
+        userList.innerHTML = html;
+      })
+      .catch(() => {
+        userList.innerHTML = '<p class="error">Erro ao carregar os usuários.</p>';
+      });
+  });
+
+  // 5. Weather forecast based on geolocation using Open-Meteo API (no key required)
+  const btnGetWeather = document.getElementById('btnGetWeather');
+  const weatherMessage = document.getElementById('weatherMessage');
+  const weatherInfo = document.getElementById('weatherInfo');
+  const weatherLocation = document.getElementById('weatherLocation');
+  const temperatureSpan = document.getElementById('temperature');
+  const weatherConditionSpan = document.getElementById('weatherCondition');
+  const windSpeedSpan = document.getElementById('windSpeed');
+
+  btnGetWeather.addEventListener('click', () => {
+    weatherInfo.style.display = 'none';
+    weatherMessage.textContent = 'Obtendo localização...';
+    if (!navigator.geolocation) {
+      weatherMessage.textContent = 'Geolocalização não suportada neste navegador.';
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(successPosition, errorPosition, {timeout:10000});
+  });
+
+  function successPosition(position) {
+    const lat = position.coords.latitude.toFixed(4);
+    const lon = position.coords.longitude.toFixed(4);
+    weatherMessage.textContent = 'Obtendo dados meteorológicos...';
+    // Fetch weather from open-meteo.com free API
+    // We get current temperature, windspeed, and weathercode (to decode condition)
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.current_weather) {
+          weatherMessage.textContent = 'Não foi possível obter previsão do tempo.';
+          return;
+        }
+        const cw = data.current_weather;
+
+        weatherLocation.textContent = `Lat: ${lat}, Lon: ${lon}`;
+        temperatureSpan.textContent = cw.temperature;
+        weatherConditionSpan.textContent = weatherCodeToText(cw.weathercode);
+        windSpeedSpan.textContent = cw.windspeed;
+
+        weatherMessage.textContent = '';
+        weatherInfo.style.display = 'block';
+      })
+      .catch(() => {
+        weatherMessage.textContent = 'Erro ao carregar a previsão do tempo.';
+      });
+  }
+
+  function errorPosition(err) {
+    if (err.code === 1) {
+      weatherMessage.textContent = 'Permissão de localização negada.';
+    } else if (err.code === 2) {
+      weatherMessage.textContent = 'Localização indisponível.';
+    } else if (err.code === 3) {
+      weatherMessage.textContent = 'Tempo esgotado para obter localização.';
+    } else {
+      weatherMessage.textContent = 'Erro desconhecido ao obter localização.';
+    }
+  }
+  // Source: https://open-meteo.com/en/docs#weathercode
+  function weatherCodeToText(code) {
+    const map = {
+      0: "Céu limpo",
+      1: "Principalmente limpo",
+      2: "Parcialmente nublado",
+      3: "Nublado",
+      45: "Neblina",
+      48: "Neblina com cristais de gelo",
+      51: "Chuvisco leve",
+      53: "Chuvisco moderado",
+      55: "Chuvisco denso",
+      56: "Chuvisco congelante leve",
+      57: "Chuvisco congelante denso",
+      61: "Chuva leve",
+      63: "Chuva moderada",
+      65: "Chuva forte",
+      66: "Chuva congelante leve",
+      67: "Chuva congelante intensa",
+      71: "Neve leve",
+      73: "Neve moderada",
+      75: "Neve forte",
+      77: "Granizo",
+      80: "Chuva com pancadas leves",
+      81: "Chuva com pancadas moderadas",
+      82: "Chuva com pancadas intensas",
+      85: "Neve com pancadas leves",
+      86: "Neve com pancadas fortes",
+      95: "Tempestade com raios leves ou moderados",
+      96: "Tempestade com granizo leve",
+      99: "Tempestade com granizo intenso"
+    };
+    return map[code] || "Desconhecido";
+  }
+</script>
 </body>
 </html>
